@@ -1,7 +1,5 @@
-import HomePage from "./../home/page";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <HomePage></HomePage>
-  );
+export default function RootPage() {
+  redirect('/en/nyc-to-ithaca');
 }

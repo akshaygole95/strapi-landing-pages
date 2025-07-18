@@ -44,3 +44,81 @@ img {
     color-scheme: dark;
   }
 }
+
+section {
+  padding: 50px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-description {
+  font-family: Raleway-Regular;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  color: #454545;
+  margin-bottom: 20px;
+}
+
+.amenities-wrapper img {
+  width: 20px;
+  height: 16px;
+}
+
+.ticket-price-section img {
+  width: 14px;
+}
+
+.ticket-price-section ul {
+  align-items: flex-start !important;
+}
+
+section .rich-text-content a {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+}
+
+section .rich-text-content a:hover {
+  text-decoration: underline
+}
+
+section ul li {
+  list-style-type: none;
+}
+
+section ul li .title-wrapper img {
+  width: 24px;
+  margin-right: 10px;
+}
+
+section ul li .title-wrapper h3 {
+  font-size: 16px;
+}
+
+section ul li .title-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+section ul li .address-wrapper button {
+  font-size: 10px;
+  line-height: 11px;
+  font-family: 'Sohne-Mager';
+  color: #67ad5b;
+  border: 1px solid #67ad5b;
+  width: 85px;
+  height: 19px;
+  background: 0;
+  border-radius: 3px;
+  margin-top: 12px;
+  cursor: pointer;
+  padding-left: 2px;
+  padding-right: 2px;
+}

@@ -86,7 +86,7 @@ export default function ClientPage({
                                 justifyContent: 'center',
                             }}
                         >
-                            {heroSection.amenities.map((item: any, index: any) => (
+                            {heroSection.amenities?.map((item: any, index: any) => (
                                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     {item.icon?.url && (
                                         <Image src={item.icon.url} alt={item.label} width={20} height={20} />
@@ -108,14 +108,14 @@ export default function ClientPage({
                     <div className="row">
                         <div className="col-md-6">
                             <img
-                                src={routeDescription.image1.url}
+                                src={routeDescription.image1?.url}
                                 alt="Waterfall near Ithaca"
                                 className="rounded-lg shadow-md w-full object-cover"
                             />
                         </div>
                         <div className="col-md-6">
                             <img
-                                src={routeDescription.image2.url}
+                                src={routeDescription.image2?.url}
                                 alt="Cornell University Building"
                                 className="rounded-lg shadow-md w-full object-cover"
                             />
@@ -129,7 +129,7 @@ export default function ClientPage({
                     <h2 className="section-title text-3xl font-bold text-center mb-6">
                         {ticketPrice.title}
                     </h2>
-                    {ticketPrice.list.map((item: any, index: any) => (
+                    {ticketPrice.list?.map((item: any, index: any) => (
                         <ul key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             {item.icon?.url && (
                                 <Image src={item.icon.url} alt={item.label} width={20} height={20} />
@@ -157,7 +157,7 @@ export default function ClientPage({
                 <section className="container" style={{ padding: '2rem 0' }}>
                     <h2 style={{ textAlign: 'center' }}>{faqList.title}</h2>
                     <ul className="rich-text-content">
-                        {faqList.faq.map((faq: any, index: any) => (
+                        {faqList.faq?.map((faq: any, index: any) => (
                             <li key={index} style={{ marginBottom: '1rem' }}>
                                 <strong>{faq.question}</strong>
                                 <RichTextRenderer richTextData={faq.answer} />
@@ -173,7 +173,7 @@ export default function ClientPage({
                     <div className="row">
                         <div className="col-md-6">
                             <ul className="rich-text-content">
-                                {stopsAndLocations.list.map((loc: any, index: any) => (
+                                {stopsAndLocations.list?.map((loc: any, index: any) => (
                                     <li key={index} style={{ marginBottom: '1rem' }}>
                                         <div className="title-wrapper">
                                             <img src={loc.icon.url} alt="" />

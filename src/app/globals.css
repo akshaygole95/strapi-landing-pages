@@ -122,3 +122,29 @@ section ul li .address-wrapper button {
   padding-left: 2px;
   padding-right: 2px;
 }
+
+.banner {
+  position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.banner .image-text-banner img {
+  max-width: 240px;
+}
+
+.banner p {
+  margin: 0;
+}
+
+.banner .banner-wrapper .card {
+  border-radius: 0;
+}
+
+.banner .card.image-banner img {
+  width: 100%;
+  height: auto;
+  border-radius: 0 !important;
+}

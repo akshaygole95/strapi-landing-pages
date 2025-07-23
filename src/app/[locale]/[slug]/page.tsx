@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname, useParams } from 'next/navigation';
+import BannerRenderer from '../../components/shared/BannerRenderer';
+import RichTextRenderer from '../../components/shared/RichTextHelper';
 
 
 type Props = {
@@ -18,7 +20,8 @@ const populateQuery = `&populate[blocks][on][value.hero-section][populate][backg
 &populate[blocks][on][value.route-description][populate]=*
 &populate[blocks][on][value.unordered-icon-list][populate][list][populate]=icon
 &populate[blocks][on][value.pick-up-drop-off-section][populate]=*
-&populate[blocks][on][value.faq-list][populate]=*`;
+&populate[blocks][on][value.faq-list][populate]=*
+&populate[banners][populate][bannerContent][populate]=image`;
 
 async function getLocaleData(locale: any, slug: any) {
   // const slug = 'nyc-to-ithaca';
@@ -29,49 +32,6 @@ async function getLocaleData(locale: any, slug: any) {
   return json;
 }
 
-function richTextHelper(data: any) {
-  return data.map((block: any, index: number) => {
-    if (block.type === 'paragraph') {
-      return (
-        <p key={index} style={{ marginBottom: '1rem' }}>
-          {block.children?.map((child: any, i: number) => {
-            if (child.type === 'text') {
-              return (
-                <span key={i} style={{ fontWeight: child.bold ? 'bold' : 'normal' }}>
-                  {child.text}
-                </span>
-              );
-            }
-
-            if (child.type === 'link') {
-              return (
-                <a
-                  key={i}
-                  href={child.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {child.children?.map((linkChild: any, j: number) => (
-                    <span
-                      key={j}
-
-                    >
-                      {linkChild.text}
-                    </span>
-                  ))}
-                </a>
-              );
-            }
-
-            return null;
-          })}
-        </p>
-      );
-    }
-
-    return null;
-  });
-}
 
 export default function HomePage() {
   const params = useParams();
@@ -94,6 +54,7 @@ export default function HomePage() {
         pickUpDropOffSection: blocks.find((b: any) => b.__component === 'value.pick-up-drop-off-section'),
         faqList: blocks.find((b: any) => b.__component === 'value.faq-list'),
         stopsAndLocations: blocks.find((b: any) => b.__component === 'value.unordered-icon-list' && b.key === 'bus-station'),
+        banners: json.data[0]?.banners || [],
       });
 
       setLoading(false);
@@ -108,10 +69,21 @@ export default function HomePage() {
 
   if (loading || !sections) return <p>Loading...</p>;
 
-  const { heroSection, routeDescription, ticketPrice, pickUpDropOffSection, faqList, stopsAndLocations } = sections;
+  const { heroSection, routeDescription, ticketPrice, pickUpDropOffSection, faqList, stopsAndLocations, banners } = sections;
 
   return (
     <div>
+
+      {banners && banners.length > 0 && banners.map((banner: any, index: number) => (
+        <div key={index} className="banner">
+          <BannerRenderer data={banner} />
+        </div>
+      ))}
+
+
+
+
+
       <div style={{ marginBottom: 20 }}>
         <button onClick={() => handleSwitchLocale('en')} disabled={locale === 'en'}>English</button>
         <button onClick={() => handleSwitchLocale('es')} disabled={locale === 'es'} style={{ marginLeft: 10 }}>Español</button>
@@ -233,7 +205,7 @@ export default function HomePage() {
             }} />
             <div className='rich-text-content'>
               <h4>{pickUpDropOffSection.tripTitle}</h4>
-              {richTextHelper(pickUpDropOffSection.description)}
+              <RichTextRenderer richTextData={pickUpDropOffSection.description} />
             </div>
           </div>
         </section>
@@ -250,7 +222,7 @@ export default function HomePage() {
               {faqList.faq.map((faq: any, index: any) => (
                 <li key={index} style={{ marginBottom: '1rem' }}>
                   <strong>{faq.question}</strong>
-                  {richTextHelper(faq.answer)}
+                  <RichTextRenderer richTextData={faq.answer} />
                 </li>
               )
               )}

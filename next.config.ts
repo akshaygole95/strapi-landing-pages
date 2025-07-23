@@ -12,7 +12,13 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  },
+  }
+
+  // i18n: {
+  //   locales: ['en', 'es'], // Add all supported locales from Strapi
+  //   defaultLocale: 'en'
+  // },
+
 };
 
 export default nextConfig;

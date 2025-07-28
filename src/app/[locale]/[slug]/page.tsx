@@ -1,7 +1,16 @@
+// File: app/[locale]/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import ClientPage from './ClientPage';
 
-const API_BASE_URL = 'http://localhost:1337/api';
+
+type PageProps = {
+  params: {
+    locale: 'en' | 'es';
+    slug: string;
+  };
+};
+
+const API_BASE_URL = process.env.STRAPI_BASE_URL || 'http://localhost:1337/api';
 const populateQuery = `&populate[blocks][on][value.hero-section][populate][backgroundImage]=true
 &populate[blocks][on][value.hero-section][populate][amenities][populate]=icon
 &populate[blocks][on][value.route-description][populate]=*
@@ -12,11 +21,19 @@ const populateQuery = `&populate[blocks][on][value.hero-section][populate][backg
 
 async function getLocaleData(locale: string, slug: string) {
   const url = `${API_BASE_URL}/landing-pages?filters[slug][$eq]=${slug}&locale=${locale}${populateQuery}`;
-  const res = await fetch(url, { cache: 'no-store' });
+  const res = await fetch(url, {
+    next: { tags: [`page-${locale}-${slug}`] },
+  });
+
+  if (!res.ok) {
+    console.error('❌ Failed to fetch from Strapi:', res.status);
+    notFound();
+  }
+
   const json = await res.json();
 
   if (!json || !json.data || json.data.length === 0) {
-    notFound(); 
+    notFound();
   }
 
   const blocks = json.data[0]?.blocks || [];
@@ -30,16 +47,25 @@ async function getLocaleData(locale: string, slug: string) {
       faqList: blocks.find((b: any) => b.__component === 'value.faq-list'),
       stopsAndLocations: blocks.find((b: any) => b.__component === 'value.unordered-icon-list' && b.key === 'bus-station'),
       banners: json.data[0]?.banners || [],
-    }
+    },
   };
 }
 
-export default async function Page({ params }: { params: Record<string, string> }) {
- 
-  const locale = params['locale'];
-  const slug = params['slug'];
+export async function generateStaticParams() {
+  const res = await fetch(`${API_BASE_URL}/landing-pages?populate=*&pagination[pageSize]=100`);
+  const json = await res.json();
+   console.log('🔁 Generating static params for landing pages', json.data?.length);
+  //  console.log(json.data)
+  return json.data.map((page: any) => ({
+    locale: page.locale,
+    slug: page.slug,
+  }));
+}
 
-  if (locale !== 'en' && locale !== 'es') {
+export default async function Page({ params }: PageProps) {
+  const { locale, slug } = await Promise.resolve(params);
+
+  if (!['en', 'es'].includes(locale)) {
     notFound();
   }
 
@@ -47,7 +73,7 @@ export default async function Page({ params }: { params: Record<string, string> 
 
   return (
     <ClientPage
-      locale={locale as 'en' | 'es'}
+      locale={locale}
       slug={slug}
       sections={data.sections}
     />

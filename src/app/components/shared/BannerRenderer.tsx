@@ -41,7 +41,7 @@ const SharedBanner: React.FC<BannerProps> = ({ data }) => {
 
     if (!isActive) return null;
 
-    console.log('BannerRenderer', banner);
+    // console.log('BannerRenderer', banner);
 
     return (
         <div className="banner-wrapper">

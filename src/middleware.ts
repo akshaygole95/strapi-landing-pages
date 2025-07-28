@@ -13,7 +13,7 @@ function detectLocale(request: NextRequest): string {
 }
 
 export function middleware(request: NextRequest) {
-  console.log('✅ Middleware is running'); // ← Should print now
+  // console.log('✅ Middleware is running'); // ← Should print now
 
   const { pathname } = request.nextUrl;
 
@@ -33,5 +33,7 @@ export function middleware(request: NextRequest) {
 
 
 export const config = {
-  matcher: ['/', '/((?!_next|.*\\..*).*)'],
+  matcher: [
+    '/((?!api|_next|.*\\..*).*)', // exclude /api/* and static files
+  ]
 };
